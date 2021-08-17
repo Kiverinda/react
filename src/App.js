@@ -1,25 +1,49 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import InputMessageComponent from './InputMessageComponent';
+import MessageList from './MessageList';
 import './App.css';
 
 function App() {
+  const [inputMessage, setInputMessage] = useState('');
+  const [messageArray, setMessageArray] = useState([]);
+
+  const onSendMessage = () => {
+    if (inputMessage !== '') {
+      var message = {
+        text: inputMessage,
+        autor: 'admin'
+      };
+      setMessageArray((prev) => [...prev, message]);
+      setInputMessage('');
+      setTimeout(addAnswer, 3000);
+    }
+  };
+
+
+  const addAnswer = () => {
+    var answer = {
+      autorAnswer: 'autor',
+      textAnswer: 'text'
+    }
+    setMessageArray((prev) => [...prev, answer]); 
+  };
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mainWrapper">
+      < MessageList
+        statMessageArray={messageArray}
+      />
+      < div className = 'inputWrapper' >
+        < InputMessageComponent
+          value = { inputMessage }
+          funcSetInputMessage={ setInputMessage } 
+          funcSetMessageArray={setMessageArray}
+          funcOnSendMessage={onSendMessage}
+        />
+        < button className = 'buttonSend' onClick = { onSendMessage } > Отправить </button> 
+      </div>
     </div>
   );
-}
+};
 
 export default App;

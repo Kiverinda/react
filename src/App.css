@@ -1,38 +1,64 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.mainWrapper {
+  width: 300px;
+  height: 500px;
+  border: 1px solid rgb(248, 211, 166);
   display: flex;
   flex-direction: column;
+  background-color: bisque;
+}
+
+.messageList {
+  margin: 5px 5px 0px 5px;
+  padding: 5px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.inputWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
 }
 
-.App-link {
-  color: #61dafb;
+.messageList{
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.autorMessage{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    color: red;
+}
+
+.textMessage {
+  font-family: Georgia,
+    'Times New Roman',
+    Times,
+    serif;
+  font-size: 18px;
+  color: black;
+  margin-left: 15px;
+}
+
+.autorAnswer {
+  font-family: 'Times New Roman',
+    Times,
+    serif;
+  font-size: 15px;
+  color:blue;
+  width: 100%;
+  margin-right: 5px;
+  text-align: right;
+}
+
+.textAnswer { 
+  width: 100%;
+  margin-right: 5px;
+  text-align: right;
+  font-size: 18px;
 }
