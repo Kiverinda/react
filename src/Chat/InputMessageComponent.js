@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InputMessageComponent = (props) => {
-    const classes = useStyles();
+  const classes = useStyles();
   return (
     <TextField
       classes={{
