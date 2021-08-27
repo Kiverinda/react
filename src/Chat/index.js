@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
-import InputMessageComponent from './InputMessageComponent';
-import MessageListComponent from './MessageListComponent';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
+import InputMessComponent from './InputMessComponent';
 
 const useStyles = makeStyles((theme) => ({
   mainWrapper: {
-    width: '400px',
-    height: '600px',
-    border: '1px solid rgb(248, 211, 166)',
+    width: "100%",
+    margin: "0px",
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'bisque'
   },
-  button: {
-    margin: "12px 0px",
-},
 }));
 
 function Chat() {
@@ -25,12 +17,16 @@ function Chat() {
   
   const classes = useStyles();
   const trimMessageText = inputMessage.trim();
+  const numMessage = messageArray.length + 1;
 
   const onSendMessage = () => {
     if (trimMessageText !== '') {
       var message = {
+        id: {numMessage},
+        autor: 'admin',
+        avatar: '/static/images/avatar/2.jpg',
         text: trimMessageText,
-        autor: 'admin'
+        class: 'primaryMessage'
       };
       setMessageArray((prev) => [...prev, message]);
       setInputMessage('');
@@ -41,35 +37,26 @@ function Chat() {
 
   const addAnswer = () => {
     var answer = {
-      autorAnswer: 'autor',
-      textAnswer: 'text'
+      id: {numMessage},
+      autor: 'autor',
+      avatar: '',
+      text: 'Answer',
+      class: 'answerMessage'
     }
     setMessageArray((prev) => [...prev, answer]);
   };
 
   return (
     <div className={classes.mainWrapper}>
-      < MessageListComponent
-        statMessageArray={messageArray}
-      />
       < div className = 'inputWrapper' >
-        < InputMessageComponent
+        <InputMessComponent
           value = { inputMessage }
           funcSetInputMessage={ setInputMessage } 
-          // funcSetMessageArray={setMessageArray}
           funcOnSendMessage={onSendMessage}
+          statMessageArray={messageArray}
         />
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={onSendMessage}
-          classes={{
-            root: classes.button
-          }}
-        >
-          <SendIcon />
-          </Button>
       </div>
+
     </div>
   );
 };
