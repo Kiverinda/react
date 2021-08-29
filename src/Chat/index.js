@@ -1,21 +1,10 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import InputMessComponent from './InputMessComponent';
-
-const useStyles = makeStyles((theme) => ({
-  mainWrapper: {
-    width: "100%",
-    margin: "0px",
-    display: 'flex',
-    flexDirection: 'column',
-  },
-}));
 
 function Chat() {
   const [inputMessage, setInputMessage] = useState('');
   const [messageArray, setMessageArray] = useState([]);
   
-  const classes = useStyles();
   const trimMessageText = inputMessage.trim();
   const numMessage = messageArray.length + 1;
 
@@ -47,16 +36,13 @@ function Chat() {
   };
 
   return (
-    <div className={classes.mainWrapper}>
-      < div className = 'inputWrapper' >
+    <div>
         <InputMessComponent
           value = { inputMessage }
           funcSetInputMessage={ setInputMessage } 
           funcOnSendMessage={onSendMessage}
           statMessageArray={messageArray}
         />
-      </div>
-
     </div>
   );
 };

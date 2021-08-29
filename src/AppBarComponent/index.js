@@ -50,26 +50,27 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    height:'100%'
   },
 }));
 
-function ListItemLink(props) {
-  const { icon, primary, to } = props;
+// function ListItemLink(props) {
+//   const { icon, primary, to } = props;
 
-  const renderLink = React.useMemo(
-    () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
-    [to],
-  );
+//   const renderLink = React.useMemo(
+//     () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
+//     [to],
+//   );
 
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
-};
+//   return (
+//     <li>
+//       <ListItem button component={renderLink}>
+//         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+//         <ListItemText primary={primary} />
+//       </ListItem>
+//     </li>
+//   );
+// };
 
 function AppBarComponent(props) {
   const { window } = props;
