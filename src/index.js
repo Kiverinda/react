@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './theme.js';
 import App from './App';
-import TestComp from './TestComp/index.js';
 
 
 ReactDOM.render(

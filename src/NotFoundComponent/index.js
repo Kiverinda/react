@@ -9,14 +9,14 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
-function HomeComponent() {
+function NotFoundComponent() {
     const classes = useStyles();
   return (
     <main className={classes.content}>
     <Toolbar />
-      <h3>Home Page</h3>
+      <h3>Not Found Page</h3>
     </main>
   );
 };
 
-export default HomeComponent;
+export default NotFoundComponent;
