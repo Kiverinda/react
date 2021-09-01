@@ -4,11 +4,18 @@ import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatComponent from './ChatComponent';
 import ListChatComponent from './ListChatComponent';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
+import { useSelector } from 'react-redux';
+import {
+  BrowserRouter as Link
+} from "react-router-dom";
+
+
+
 const drawerWidth = '58vh';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,55 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatsComponent = (props) => {
   
   const params = Number(useParams().chatId);
-
-  console.log(params.chatId);
-  const [inputMessage, setInputMessage] = useState('');
-  const [messageArray, setMessageArray] = useState([]);
-  const [chatsArray, setChatsArray] = useState([]);
-
-  const trimMessageText = inputMessage.trim();
-  const numMessage = messageArray.length + 1;
-
-  const onSendMessage = () => {
-    if (trimMessageText !== '') {
-      var message = {
-        id: { numMessage },
-        idChat: '1',
-        autor: 'admin',
-        avatar: '/static/images/avatar/2.jpg',
-        text: trimMessageText,
-        class: 'primaryMessage'
-      };
-      setMessageArray((prev) => [...prev, message]);
-      setInputMessage('');
-      // setChatsArray(chatsArray[params].messages.push(message));
-      setTimeout(addAnswer, 3000);
-    }
-  };
-
-  const addChat = () => {
-    const newIdChat = chatsArray.length + 1;
-    var chat = {
-      idChat: { newIdChat },
-      autor: `admin-${newIdChat}`,
-      avatar: '/static/images/avatar/2.jpg',
-      class: 'chat',
-      messages: [{}],
-    };
-    setChatsArray((prev) => [...prev, chat]);
-  };
-
-  const addAnswer = () => {
-    var answer = {
-      id: { numMessage },
-      idChat: '1',
-      autor: 'autor',
-      avatar: '',
-      text: 'Answer',
-      class: 'answerMessage'
-    }
-    setMessageArray((prev) => [...prev, answer]);
-  };
+  const listChats = useSelector(state => state.chats.arrayChats);
 
   const classes = useStyles();
 
@@ -105,7 +64,7 @@ const ChatsComponent = (props) => {
             <Typography className={classes.titlemenu} variant="h6" noWrap>
                 Chat-training project
             </Typography>
-                <Button href="/profile" className={classes.buttonmenu} color="inherit">Login</Button>
+                <Button className={classes.buttonmenu} color="inherit"><Link to="/profile">Login</Link></Button>
             </Toolbar>
       </AppBar>
       <Drawer
@@ -117,20 +76,19 @@ const ChatsComponent = (props) => {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <ListChatComponent
-            value={chatsArray}
-            funcOnAddChat={ addChat }
-          />
+          <ListChatComponent />
         </div>
       </Drawer>
       <main className={classes.content}>
-            <Toolbar />
-              <ChatComponent
-                        value = { inputMessage }
-                        funcSetInputMessage={ setInputMessage } 
-                        funcOnSendMessage={onSendMessage}
-                        statMessageArray={messageArray}
-              />
+        <Toolbar />
+        {params > listChats.length &&
+        <Redirect to="/chats" />
+        }
+        {params > 0 &&
+          <>
+          {params <= listChats.length && <ChatComponent />}
+          </>
+        }
       </main>
     </div>
   );

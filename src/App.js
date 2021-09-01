@@ -7,14 +7,13 @@ import {
 import ProfileComponent from "./Profile";
 import ChatsComponent from "./Chats";
 import NotFoundComponent from "./NotFoundComponent"
-import AppBarComponent from "./AppBarComponent";
 import HomeComponent from "./Home";
-  
+
+
 const App = () => {
 
 return (
-      <Router>
-        <AppBarComponent />
+  <Router>
           <Switch>
             <Route exact path="/chat/:chatId">
               <ChatsComponent />
@@ -37,7 +36,7 @@ return (
             </Route>
           
           </Switch>
-      </Router>
+    </Router>
   );
 };
 

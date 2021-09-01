@@ -1,21 +1,56 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-      },
-  }));
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      display: 'flex',
+
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    },
+    titlemenu: {
+        flexGrow: 1,
+    },
+    buttonmenu: {
+        marginRight: theme.spacing(2),
+    }
+}));
 
 function HomeComponent() {
     const classes = useStyles();
   return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+            <Typography className={classes.titlemenu} variant="h6" noWrap>
+                Chat-training project
+            </Typography>
+            <Button className={classes.buttonmenu} color="inherit"><Link to="/profile">Login</Link></Button>
+            </Toolbar>
+      </AppBar>
     <main className={classes.content}>
     <Toolbar />
       <h3>Home Page</h3>
-    </main>
+      </main>
+      </div>
   );
 };
 

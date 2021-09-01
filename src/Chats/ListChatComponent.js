@@ -6,11 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
+import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import AddIcon from '@material-ui/icons/Add';
+import { useSelector, useDispatch } from 'react-redux';
+import { addNewChat } from '../Chats/chatsSlice';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -45,29 +49,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListChatComponent = (props) => {
+const ListChatComponent = () => {
   const classes = useStyles();
+  const listChats = useSelector(state => state.chats.arrayChats);
+  const dispatch = useDispatch();
+  
+  const addChat = () => {
+    const newIdChat = listChats.length + 1;
+    var chat = {
+      idChat: newIdChat,
+      link: `../chat/${newIdChat}`,
+      autor: `admin-${newIdChat}`,
+      avatar: '../static/images/avatar/2.jpg',
+      class: 'chat',
+      messages: []
+    };
+    dispatch(addNewChat(chat));
+  };
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Paper square className={classes.paper}>
         <List className={classes.list}>
-          {props.value.map(({ idChat, autor, avatar}) => (
+          {listChats.map(({ idChat, link, autor, avatar}) => (
             <React.Fragment key={idChat}>
-              <ListItem button onClick="location.href='/chat'">
-                <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={avatar} />
-                </ListItemAvatar>
-                <ListItemText primary={autor} />
+            <Link to={ link } color="inherit">
+            <ListItem button>
+              <ListItemAvatar>
+                <Avatar alt="Profile Picture" src={avatar} />
+              </ListItemAvatar>
+              <ListItemText primary={autor} />
               </ListItem>
-            </React.Fragment>
+              </Link>
+          </React.Fragment>
           ))}
         </List>
           </Paper>
       <AppBar position="fixed" color="primary" className={classes.appBarBottom}>
       <Toolbar>
-              <Fab onClick={props.funcOnAddChat} color="secondary" aria-label="add" className={classes.fabButton}>
+              <Fab onClick={addChat} color="secondary" aria-label="add" className={classes.fabButton}>
             <AddIcon />
           </Fab>
           <div className={classes.grow} />
