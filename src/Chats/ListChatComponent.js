@@ -6,7 +6,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
-import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -14,7 +13,7 @@ import Avatar from '@material-ui/core/Avatar';
 import AddIcon from '@material-ui/icons/Add';
 import { useSelector, useDispatch } from 'react-redux';
 import { addNewChat } from '../Chats/chatsSlice';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -47,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     margin: '0 auto',
   },
+  itemchat: {
+    textDecoration: "none",
+    color: "inherit",
+  }
 }));
 
 const ListChatComponent = () => {
@@ -60,7 +63,7 @@ const ListChatComponent = () => {
       idChat: newIdChat,
       link: `../chat/${newIdChat}`,
       autor: `admin-${newIdChat}`,
-      avatar: '../static/images/avatar/2.jpg',
+      avatar: '/static/images/avatar/2.jpg',
       class: 'chat',
       messages: []
     };
@@ -74,14 +77,14 @@ const ListChatComponent = () => {
         <List className={classes.list}>
           {listChats.map(({ idChat, link, autor, avatar}) => (
             <React.Fragment key={idChat}>
-            <Link to={ link } color="inherit">
+              <Link to={link} className={ classes.itemchat } color="inherit">
             <ListItem button>
               <ListItemAvatar>
                 <Avatar alt="Profile Picture" src={avatar} />
               </ListItemAvatar>
               <ListItemText primary={autor} />
               </ListItem>
-              </Link>
+            </Link>
           </React.Fragment>
           ))}
         </List>

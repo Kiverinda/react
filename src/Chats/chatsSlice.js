@@ -3,15 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const chatsSlice = createSlice({
     name: 'chats',
     initialState: {
-        arrayChats: [
-            // {
-            // id: 0,
-            // link: `../chat/0`,
-            // messages: [{
-            //     text: "asasasa"
-            // }]
-            // }
-        ]
+        arrayChats: []
   },
   reducers: {
     addNewChat: (state, action) => {

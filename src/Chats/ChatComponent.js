@@ -7,24 +7,24 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector, useDispatch } from 'react-redux';
 import { addNewMessage } from '../Chats/chatsSlice';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   text: {
     padding: theme.spacing(2, 2, 0),
   },
   paperchat: {
-    paddingBottom: 50,
+    marginBottom: 50,
   },
   listchat: {
-    marginBottom: theme.spacing(2),
+    paddingBottom: '0px',
+    paddingTop: '0px'
   },
   subheaderchat: {
     backgroundColor: theme.palette.background.paper,
@@ -46,6 +46,14 @@ const useStyles = makeStyles((theme) => ({
     height: '45px',
     width: '75px',
     left: '20px'
+  },
+  listItemPrimary: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  listItem: {
+    width: '100%',
   }
 }));
 
@@ -55,22 +63,21 @@ const ChatComponent = (props) => {
 
   const params = Number(useParams().chatId);
 
-  const listMessages = useSelector(state => state.chats.arrayChats[params-1].messages);
+  const listMessages = useSelector(state => state.chats.arrayChats[params - 1].messages);
   const dispatch = useDispatch();
-
-console.log(listMessages)
 
   const trimMessageText = inputMessage.trim();
   const numMessage = listMessages.length + 1;
 
   const onSendMessage = () => {
-     if (trimMessageText !== '') {
+    if (trimMessageText !== '') {
       var message = {
         id: numMessage,
         idChat: params,
         autor: 'admin',
         text: trimMessageText,
-        class: 'primaryMessage'
+        class: 'classes.answerMessage',
+        dateTime: Date.now()
       };
        
       dispatch(addNewMessage({
@@ -79,8 +86,7 @@ console.log(listMessages)
       }));
       setInputMessage('');
       setTimeout(addAnswer, 3000);
-      console.log(listMessages)
-     }
+    }
   };
 
   const addAnswer = () => {
@@ -88,29 +94,27 @@ console.log(listMessages)
       id: { numMessage },
       idChat: '1',
       autor: 'autor',
-      avatar: '',
       text: 'Answer',
-      class: 'answerMessage'
+      classMessage: 'classes.answerMessage',
+      dateTime: Date.now()
     }
     dispatch(addNewMessage({
       idChat: params - 1,
       newMessage: answer
     }));
   };
-
     return (
       <React.Fragment>
         <CssBaseline />
         <Paper square className={classes.paperchat}>
           <List className={classes.listchat}>
-            {listMessages.map(({ id, autor, avatar, text }) => (
+            {listMessages.map(({ id, dateTime, text}) => (
               <React.Fragment key={id}>
-                <ListItem className={classes.primaryMessage}>
-                  <ListItemAvatar>
-                    <Avatar alt="Profile Picture" src={avatar} />
-                  </ListItemAvatar>
-                  <ListItemText primary={autor} secondary={text} />
+                <ListItem className={classes.listItemPrimary}>
+                  <ListItemText className={classes.listItem} secondary={new Date(dateTime).toTimeString().replace(/ .*/, '')}/>
+                  <ListItemText className={classes.listItem} primary={text} />
                 </ListItem>
+                <Divider />
               </React.Fragment>
             ))}
           </List>
