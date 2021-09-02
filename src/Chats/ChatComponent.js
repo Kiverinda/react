@@ -111,7 +111,8 @@ const ChatComponent = (props) => {
             {listMessages.map(({ id, dateTime, text}) => (
               <React.Fragment key={id}>
                 <ListItem className={classes.listItemPrimary}>
-                  <ListItemText className={classes.listItem} secondary={new Date(dateTime).toTimeString().replace(/ .*/, '')}/>
+                  <ListItemText className={classes.listItem}
+                    secondary={new Date(dateTime).toTimeString().replace(/ .*/, '')} />
                   <ListItemText className={classes.listItem} primary={text} />
                 </ListItem>
                 <Divider />
