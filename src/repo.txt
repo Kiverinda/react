@@ -1,0 +1,24 @@
+    <React.Fragment>
+      <CssBaseline />
+      <Paper square className={classes.paper}>
+        <List className={classes.list}>
+          {listChats.map(({ idChat, autor, avatar, newNoViewMessage}) => (
+            <React.Fragment key={idChat}>
+              <Button key={idChat} className={classes.buttonListChat} onClick={(e) => openChat(idChat)}>
+              {/* <Link to={link} className={ classes.itemchat } color="inherit"> */}
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar alt="Profile Picture" src={avatar} />
+              </ListItemAvatar>
+                  <ListItemText primary={autor} secondary={ newNoViewMessage }/>
+              </ListItem>
+              {/* </Link> */}
+              </Button>
+          </React.Fragment>
+          ))}
+        </List>
+      </Paper>
+      <Fab id="fabButton" onClick={addChat} color="primary" aria-label="edit" className={ classes.fabButton}>
+          <EditIcon />
+        </Fab>
+    </React.Fragment>
