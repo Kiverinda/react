@@ -2,23 +2,31 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import PersonalSettingsComponent from './PersonalSettingsComponent';
-import SecuritySettingsComponent from './SecuritySettingsComponent';
+import ChatComponent from '../Chats/ChatComponent';
+// import ListChatComponent from './ListChatComponent';
+import { useSelector } from 'react-redux';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import MenuListComposition from '../AppBarComponent/MenuListComposition';
+import Button from '@material-ui/core/Button';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { openProfile } from '../Home/homeSlice';
+import SettingComponent from './SettingComponent';
 
-const drawerWidth = '58vh';
-
+const drawerWidth = '30%';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      display: 'flex',
-
+  appBarTop: {
+    zIndex: theme.zIndex.drawer + 1,
+    display: 'flex',
+    left: 0,
+    right: 'auto',
+    width: drawerWidth,
+    minHeight: "50px"
   },
   drawer: {
     width: drawerWidth,
@@ -30,57 +38,42 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
       overflow: 'auto',
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+    buttonSearch: {
+      color: "#c4c9cc",
+      width: "85%",
+      borderRadius: '20px',
+  },
+  toolBarTop: {
+    [theme.breakpoints.up('sm')]: {
+      minHeight: "50px",
+      paddingLeft: '0px',
     },
-    titlemenu: {
-      flexGrow: 1,
-    },
-    buttonmenu: {
-        marginRight: theme.spacing(2),
-    }
+  },
+  buttonBack: {
+    border: 'none',
+    marginRight: '20px'
+  },
+  title: {
+    fontSize: '18px',
+    fontWeight: 'bold'
+  }
+
 }));
 
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
 const ProfileComponent = (props) => {
-  
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const isActiveChat = useSelector(state => state.chats.isActiveChat);
+  const idActiveChat = useSelector(state => state.chats.idActiveChat);
+  const dispath = useDispatch();
+  const classes = useStyles();
+
+  const profileClose = () => {
+    dispath(openProfile(false))
   };
 
-
   return (
-    <>
+    <div className={classes.root}>
+      <CssBaseline />
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -88,31 +81,21 @@ const ProfileComponent = (props) => {
           paper: classes.drawerPaper,
         }}
       >
+      <AppBar position="fixed" className={classes.appBarTop}>
+        <Toolbar variant="dense" className={classes.toolBarTop}>
+          <Button onClick={profileClose} variant="outlined" className={classes.buttonBack}>
+              <ArrowBackIcon className={classes.iconBack}/>
+            </Button>
+            <Typography className={classes.title}>Edit profile</Typography>
+        </Toolbar>
+      </AppBar>
         <Toolbar />
         <div className={classes.drawerContainer}>
-        <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        className={classes.tabs}
-      >
-        <Tab label="Personal settings" {...a11yProps(0)} />
-        <Tab label="Security settings" {...a11yProps(1)} />
-      </Tabs>
+          <SettingComponent />
         </div>
       </Drawer>
-      <main className={classes.content}>
-        <Toolbar />
-        <TabPanel value={value} index={0}>
-        <PersonalSettingsComponent />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <SecuritySettingsComponent />
-      </TabPanel>
-      </main>
-    </>
+        {isActiveChat && <ChatComponent idChat={ idActiveChat } />}
+    </div>
   );
 }
 

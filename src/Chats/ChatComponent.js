@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector, useDispatch } from 'react-redux';
 import { addNewMessage } from '../Chats/chatsSlice';
-import Divider from '@material-ui/core/Divider';
+import Typography from "@material-ui/core/Typography";
+import Box from '@material-ui/core/Box';
 
+const contentWidth = '70%';
 const useStyles = makeStyles((theme) => ({
+  appBarTop: {
+    zIndex: theme.zIndex.drawer + 1,
+    display: 'flex',
+    left: 'auto',
+    right: 0,
+    width: contentWidth,
+    minHeight: "50px"
+  },
   text: {
     padding: theme.spacing(2, 2, 0),
   },
   paperchat: {
     marginBottom: 50,
-  },
-  listchat: {
-    paddingBottom: '0px',
-    paddingTop: '0px'
+    display: 'flex',
+    flexDirection: 'column'
   },
   subheaderchat: {
     backgroundColor: theme.palette.background.paper,
@@ -32,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   appbarchat: {
     top: 'auto',
     bottom: 0,
-    width: 'calc(100% - 58vh)',
+    width: contentWidth,
     backgroundColor: theme.palette.background.paper,
   },
   forminputchat: {
@@ -47,41 +50,66 @@ const useStyles = makeStyles((theme) => ({
     width: '75px',
     left: '20px'
   },
-  listItemPrimary: {
+  leftMessage: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start'
+    alignSelf: "flex-start",
+    width: '70%',
+    border: '1px solid #c4c9cc',
+    borderRadius: '20px',
+    padding: '10px',
+    marginBottom: '10px',
+    backgroundColor: 'white'
   },
-  listItem: {
-    width: '100%',
-  }
+  rightMessage: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignSelf: "flex-end",
+    width: '70%',
+    border: '1px solid #c4c9cc',
+    borderRadius: '20px',
+    padding: '10px',
+    marginBottom: '10px',
+    backgroundColor: 'white'
+  },
+  listItemText: {
+
+  },
+  listItemTime: {
+    alignSelf: "flex-end",
+    fontSize: '12px'
+  },
+  toolbarBottom: {
+    minHeight: '0px',
+  },
+  content: {
+    flexGrow: 1,
+    padding: "75px 20px",
+    },
 }));
 
 const ChatComponent = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [inputMessage, setInputMessage] = useState('');
 
-  const params = Number(useParams().chatId);
-
-  const listMessages = useSelector(state => state.chats.arrayChats[params - 1].messages);
-  const dispatch = useDispatch();
-
+  const params = Number(props.idChat);
+  const allListChat = useSelector(state => state.chats.arrayChats[params]);
   const trimMessageText = inputMessage.trim();
-  const numMessage = listMessages.length + 1;
 
   const onSendMessage = () => {
     if (trimMessageText !== '') {
       var message = {
-        id: numMessage,
+        id: allListChat.messages.length,
         idChat: params,
         autor: 'admin',
         text: trimMessageText,
-        class: 'classes.answerMessage',
+        classMessage: classes.leftMessage,
         dateTime: Date.now()
       };
        
       dispatch(addNewMessage({
-        idChat: params - 1,
+        idChat: params,
         newMessage: message
       }));
       setInputMessage('');
@@ -91,37 +119,41 @@ const ChatComponent = (props) => {
 
   const addAnswer = () => {
     var answer = {
-      id: { numMessage },
-      idChat: '1',
+      id: allListChat.messages.length,
+      idChat: params,
       autor: 'autor',
       text: 'Answer',
-      classMessage: 'classes.answerMessage',
+      classMessage: classes.rightMessage,
       dateTime: Date.now()
     }
     dispatch(addNewMessage({
-      idChat: params - 1,
+      idChat: params,
       newMessage: answer
     }));
   };
     return (
-      <React.Fragment>
-        <CssBaseline />
-        <Paper square className={classes.paperchat}>
-          <List className={classes.listchat}>
-            {listMessages.map(({ id, dateTime, text}) => (
+      <main className={classes.content}>
+        <AppBar position="fixed" className={classes.appBarTop}>
+        <Toolbar variant="dense" className={classes.toolBarTop}>
+            <Typography> {allListChat.autor} </Typography>
+        </Toolbar>
+      </AppBar>
+        <Box className={classes.paperchat}>
+            {allListChat.messages.map(({ id, dateTime, text, classMessage }) => (
               <React.Fragment key={id}>
-                <ListItem className={classes.listItemPrimary}>
-                  <ListItemText className={classes.listItem}
-                    secondary={new Date(dateTime).toTimeString().replace(/ .*/, '')} />
-                  <ListItemText className={classes.listItem} primary={text} />
-                </ListItem>
-                <Divider />
+                <Box className={`${classMessage}`}>
+                  <Typography className={classes.listItemText}>
+                     {text}
+                  </Typography>
+                  <Typography  variant="subtitle1" className={classes.listItemTime}>
+                    {new Date(dateTime).toTimeString().replace(/ .*/, '')}
+                  </Typography>
+                </Box>
               </React.Fragment>
             ))}
-          </List>
-        </Paper>
+        </Box>
         <AppBar position="fixed" className={classes.appbarchat}>
-          <Toolbar>
+          <Toolbar variant="dense" className={ classes.toolbarBottom }>
             <TextField
               className={classes.inputchat}
               label='Введите сообщение'
@@ -143,7 +175,7 @@ const ChatComponent = (props) => {
             </Button>
           </Toolbar>
         </AppBar>
-      </React.Fragment>
+      </main>
     );
 }
 export default ChatComponent;

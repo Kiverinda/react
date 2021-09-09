@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -46,17 +45,13 @@ const App = () => {
 
 return (
   <Router>
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Link className={classes.titlemenu} to="/"><h2>Chat-training project</h2></Link>
-          <Link to="/chats" className={classes.linkbuttonmenu}>Chats</Link>
-          <Link to="/profile" className={classes.linkbuttonmenu}>Profile</Link>
-        </Toolbar>
-      </AppBar>
-          <Switch>
-            <Route exact path="/chat/:chatId">
+    <Switch>
+      
+            <Route path="/">
+                    <HomeComponent />
+            </Route>
+      
+            {/* <Route exact path="/chat/:chatId">
               <ChatsComponent />
             </Route>
             
@@ -74,10 +69,9 @@ return (
       
             <Route>
               <NotFoundComponent />
-            </Route>
+            </Route> */}
           
       </Switch>
-      </div>
     </Router>
   );
 };

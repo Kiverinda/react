@@ -1,24 +1,28 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatComponent from './ChatComponent';
 import ListChatComponent from './ListChatComponent';
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import NotFoundComponent from '../NotFoundComponent';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import MenuListComposition from '../AppBarComponent/MenuListComposition';
+import Button from '@material-ui/core/Button';
+import SearchIcon from '@material-ui/icons/Search';
 
-
-
-const drawerWidth = '58vh';
-
+const drawerWidth = '30%';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      display: 'flex',
-
+  appBarTop: {
+    zIndex: theme.zIndex.drawer + 1,
+    display: 'flex',
+    left: 0,
+    right: 'auto',
+    width: drawerWidth,
+    minHeight: "50px"
   },
   drawer: {
     width: drawerWidth,
@@ -30,30 +34,28 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
       overflow: 'auto',
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+    buttonSearch: {
+      color: "#c4c9cc",
+      width: "85%",
+      borderRadius: '20px',
+  },
+  toolBarTop: {
+    [theme.breakpoints.up('sm')]: {
+      minHeight: "50px",
+      paddingLeft: '0px',
     },
-    titlemenu: {
-      flexGrow: 1,
-    },
-    buttonmenu: {
-        marginRight: theme.spacing(2),
-    }
+  },
 }));
 
 const ChatsComponent = (props) => {
-  
-  const params = Number(useParams().chatId);
-  const listChats = useSelector(state => state.chats.arrayChats);
+
+  const isActiveChat = useSelector(state => state.chats.isActiveChat);
+  const idActiveChat = useSelector(state => state.chats.idActiveChat);
   const classes = useStyles();
 
-  if (params > listChats.length || params <= 0) {
-    return (<NotFoundComponent />)
-  }
-
   return (
-    <>
+    <div className={classes.root}>
+      <CssBaseline />
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -61,16 +63,22 @@ const ChatsComponent = (props) => {
           paper: classes.drawerPaper,
         }}
       >
+      <AppBar position="fixed" className={classes.appBarTop}>
+        <Toolbar variant="dense" className={classes.toolBarTop}>
+            <MenuListComposition />
+          <Button variant="outlined" className={classes.buttonSearch}>
+              <SearchIcon />
+              Поиск
+          </Button>
+        </Toolbar>
+      </AppBar>
         <Toolbar />
         <div className={classes.drawerContainer}>
           <ListChatComponent />
         </div>
       </Drawer>
-      <main className={classes.content}>
-        <Toolbar />
-        {!isNaN(params) && <ChatComponent /> }
-      </main>
-    </>
+        {isActiveChat && <ChatComponent idChat={ idActiveChat } />}
+    </div>
   );
 }
 

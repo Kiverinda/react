@@ -1,23 +1,16 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
+import { useSelector } from 'react-redux';
+import Chats from "../Chats";
+import Profile from "../Profile"
 
-const useStyles = makeStyles((theme) => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    },
-}));
-
-function HomeComponent() {
-    const classes = useStyles();
+const HomeComponent = () => {
+  const openComponent = useSelector(state => state.home);
+  
   return (
-    <>
-    <main className={classes.content}>
-    <Toolbar />
-      <h3>Home Page</h3>
-      </main>
-    </>
+      <React.Fragment>
+      {openComponent.openChat && <Chats />}
+      {openComponent.openProfile && <Profile />}
+      </React.Fragment>
   );
 };
 

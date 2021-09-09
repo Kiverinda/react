@@ -12,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
 function NotFoundComponent() {
     const classes = useStyles();
   return (
-    <>
+    <div>
     <main className={classes.content}>
     <Toolbar />
       <h3>Not Found Page</h3>
       </main>
-    </>
+    </div>
   );
 };
 
