@@ -7,10 +7,10 @@ const HomeComponent = () => {
   const openComponent = useSelector(state => state.home);
   
   return (
-      <React.Fragment>
+      <div>
       {openComponent.openChat && <Chats />}
       {openComponent.openProfile && <Profile />}
-      </React.Fragment>
+      </div>
   );
 };
 

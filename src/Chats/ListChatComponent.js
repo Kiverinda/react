@@ -97,7 +97,7 @@ const ListChatComponent = () => {
   const idActiveChat = useSelector(state => state.chats.idActiveChat);
   const dispatch = useDispatch();
 
-function addChat() {
+const addChat = () => {
     const newIdChat = listChats.length;
     var chat = {
       idChat: newIdChat,
@@ -110,18 +110,14 @@ function addChat() {
     dispatch(addNewChat(chat));
   };
 
-  function openChat(id) {
+  const openChat = (id) => {
     dispatch(enableChat({ idChat: id}));
   };
 
-  function countNewMessages(id) {
-    return listChats[id - 1].lastViewMessage;
-  }
-
   const formatDate = (timeStamp) => {
     const minutes = new Date(timeStamp).getMinutes();
-    if (minutes < 10) minutes == "0" + minutes;
-    return (`${new Date(timeStamp).getHours()} ` + ":" + ` ${minutes}`);
+    if (minutes < 10) return (`${new Date(timeStamp).getHours()} : 0${minutes}`);
+    return (`${new Date(timeStamp).getHours()} : ${minutes}`);
   }
 
   const activeChat = (id) => {

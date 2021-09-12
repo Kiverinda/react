@@ -10,10 +10,7 @@ export const homeSlice = createSlice({
         openProfile: (state, action) => {
             state.openProfile = action.payload;
             state.openChat = !action.payload;
-        },
-        // openChat: (state, action) => {
-        //     state.openChat = action.payload.chat
-        // },
+        }
     }
 });
 
