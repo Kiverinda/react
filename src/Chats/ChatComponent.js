@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addNewMessage } from '../Chats/chatsSlice';
 import Typography from "@material-ui/core/Typography";
 import Box from '@material-ui/core/Box';
+import clsx from 'clsx';
 
 const contentWidth = '70%';
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     width: '75px',
     left: '20px'
   },
-  leftMessage: {
+  styleMessage: {
     display: 'flex',
     flexDirection: 'column',
     alignSelf: "flex-start",
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '10px',
     backgroundColor: 'white'
   },
-  rightMessage: {
+  styleAnswer: {
     display: 'flex',
     flexDirection: 'column',
     alignSelf: "flex-end",
@@ -87,60 +88,63 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const sendMessageWithThunk = (message) => (dispatch, getState) => {
+  
+  dispatch(addNewMessage(message));
+  const answer = {
+    idMessage: message.idMessage + 1,
+    idChat: message.idChat,
+    autor: 'autor',
+    text: 'Answer',
+    classMessage: 'answer',
+    dateTime: Date.now()
+  };
+  setTimeout(() => dispatch(addNewMessage(answer)), 1500);
+}
+
 const ChatComponent = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [inputMessage, setInputMessage] = useState('');
 
-  const params = Number(props.idChat);
-  const allListChat = useSelector(state => state.chats.arrayChats[params]);
   const trimMessageText = inputMessage.trim();
+
+  const idChat = Number(props.idChat);
+  const chat = useSelector(state => state.chats.arrayChats[idChat]);
 
   const onSendMessage = () => {
     if (trimMessageText !== '') {
-      var message = {
-        id: allListChat.messages.length,
-        idChat: params,
+      const newMessage = {
+        idMessage: chat.messages.length,
+        idChat: idChat,
         autor: 'admin',
         text: trimMessageText,
-        classMessage: classes.leftMessage,
+        classMessage: 'message',
         dateTime: Date.now()
       };
-       
-      dispatch(addNewMessage({
-        idChat: params,
-        newMessage: message
-      }));
-      setInputMessage('');
-      setTimeout(addAnswer, 3000);
+      
+      dispatch(sendMessageWithThunk(newMessage));
     }
+
+    setInputMessage('');
   };
 
-  const addAnswer = () => {
-    var answer = {
-      id: allListChat.messages.length,
-      idChat: params,
-      autor: 'autor',
-      text: 'Answer',
-      classMessage: classes.rightMessage,
-      dateTime: Date.now()
-    }
-    dispatch(addNewMessage({
-      idChat: params,
-      newMessage: answer
-    }));
-  };
+  const isAnswer = (classMessage) => {
+    if (classMessage === 'answer') return true;
+    return false;
+}
+
     return (
       <main className={classes.content}>
         <AppBar position="fixed" className={classes.appBarTop}>
         <Toolbar variant="dense" className={classes.toolBarTop}>
-            <Typography> {allListChat.autor} </Typography>
+            <Typography> {chat.autor} </Typography>
         </Toolbar>
       </AppBar>
         <Box className={classes.paperchat}>
-            {allListChat.messages.map(({ id, dateTime, text, classMessage }) => (
-              <React.Fragment key={id}>
-                <Box className={`${classMessage}`}>
+            {chat.messages.map(({ idMessage, dateTime, text, classMessage }) => (
+              <React.Fragment key={idMessage}>
+                <Box className={clsx(classes.styleMessage, {[classes.styleAnswer]: isAnswer(classMessage)})}>
                   <Typography className={classes.listItemText}>
                      {text}
                   </Typography>

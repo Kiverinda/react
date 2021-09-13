@@ -16,9 +16,6 @@ const theme = createTheme({
       text: {
         color: '#707579',
       },
-    },
-    MuiToolbar: {
-        minHeight: '0px'
     }
   },
   palette: {

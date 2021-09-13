@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatComponent from './ChatComponent';
-import ListChatComponent from './ListChatComponent';
+import ListChatsComponent from './ListChatsComponent';
 import { useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -74,7 +74,7 @@ const ChatsComponent = (props) => {
       </AppBar>
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <ListChatComponent />
+          <ListChatsComponent />
         </div>
       </Drawer>
         {isActiveChat && <ChatComponent idChat={ idActiveChat } />}

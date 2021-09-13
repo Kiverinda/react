@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListChatComponent = () => {
+const ListChatsComponent = () => {
   
   const classes = useStyles();
   const listChats = useSelector(state => state.chats.arrayChats);
@@ -165,4 +165,4 @@ const addChat = () => {
   );
 }
 
-export default ListChatComponent;
+export default ListChatsComponent;

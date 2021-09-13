@@ -13,11 +13,11 @@ export const chatsSlice = createSlice({
     },
     
     addNewMessage: (state, action) => {
-      state.arrayChats[action.payload.idChat].messages.push(action.payload.newMessage);
+      state.arrayChats[action.payload.idChat].messages.push(action.payload);
       if (state.isActiveChat === true && state.idActiveChat !== action.payload.idChat) {
         ++state.arrayChats[action.payload.idChat].newNoViewMessage;
       }
-      state.arrayChats[action.payload.idChat].lastMessage = action.payload.newMessage;
+      state.arrayChats[action.payload.idChat].lastMessage = action.payload;
     },
 
     enableChat: (state, action) => {
