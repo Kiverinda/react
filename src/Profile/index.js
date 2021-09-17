@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { openProfile } from '../Home/homeSlice';
+import { openComponentLeftBar } from '../Home/homeSlice';
 import SettingComponent from './SettingComponent';
 
 const drawerWidth = '30%';
@@ -66,7 +66,7 @@ const ProfileComponent = (props) => {
   const classes = useStyles();
 
   const profileClose = () => {
-    dispath(openProfile(false))
+    dispath(openComponentLeftBar('chats'))
   };
 
   return (

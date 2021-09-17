@@ -3,17 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 export const homeSlice = createSlice({
     name: 'home',
     initialState: {
-      openProfile: false,
-      openChat: true,
+      openComponent: 'chats',
     },
     reducers: {
-        openProfile: (state, action) => {
-            state.openProfile = action.payload;
-            state.openChat = !action.payload;
+        openComponentLeftBar: (state, action) => {
+            state.openComponent = action.payload;
         }
     }
 });
 
-export const { openProfile } = homeSlice.actions
+export const { openComponentLeftBar } = homeSlice.actions
 
 export default homeSlice.reducer

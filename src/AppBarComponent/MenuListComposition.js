@@ -9,7 +9,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useDispatch } from 'react-redux';
-import { openProfile } from '../Home/homeSlice';
+import { openComponentLeftBar } from '../Home/homeSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,8 +37,16 @@ export default function MenuListComposition() {
   };
 
   const handleClose = (event) => {
-    dispath(openProfile(true));
-    console.log(true)
+    setOpen(false);
+  };
+
+  const handleCloseAPI = (event) => {
+    dispath(openComponentLeftBar('api'));
+    setOpen(false);
+  };
+
+  const handleCloseProfile = (event) => {
+    dispath(openComponentLeftBar('profile'));
     setOpen(false);
   };
 
@@ -78,9 +86,8 @@ export default function MenuListComposition() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList className={classes.menuListPopUp} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>Two</MenuItem>
-                    <MenuItem onClick={handleClose}>Three</MenuItem>
+                    <MenuItem onClick={handleCloseProfile}>Profile</MenuItem>
+                    <MenuItem onClick={handleCloseAPI}>TestAPI</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
